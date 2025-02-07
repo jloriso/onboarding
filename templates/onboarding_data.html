@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Onboarding Data</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Onboarding Data</h1>
+    <button type="button" onclick="window.location.href = '/'">Back</button><br><br>
+    <table id="dataTable"></table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = JSON.parse(localStorage.getItem('csvData')); // Get data from storage
+            const table = document.getElementById('dataTable');
+
+            if (data && data.length > 0) {
+                const headerRow = table.insertRow();
+                data[0].forEach(header => { // Create table header
+                    const th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+
+                data.slice(1).forEach(row => { // Create table rows
+                    const tr = table.insertRow();
+                    row.forEach(cell => {
+                        const td = document.createElement('td');
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+                });
+            } else {
+                table.innerHTML = "<p>No data available.</p>";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+.host-container {
+    display: flex; /* Arrange host and cohosts horizontally */
+    align-items: flex-start; /* Align items to the top */
+}
+
+.host, .cohost {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-right: 10px; /* Space between host/cohost sections */
+    margin-bottom: 10px; /* Space between host/cohost sections */
+}
+.cohost-container {
+    display: flex;
+    flex-direction: column;
+}

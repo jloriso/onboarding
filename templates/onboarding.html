@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='onboarding.css') }}">
+    <title>WIIT Onboarding</title>
+    <style>
+    </style>
+</head>
+<body>
+
+    <h1>WIIT Onboarding Form</h1>
+
+    <button type="button" onclick="addCohost()">Add Cohost</button><br><br>
+
+    <form id="onboardingForm">
+        <div class="host-container">
+            <div class="host">
+                <label for="hostName">Host Name:</label><br>
+                <input type="text" id="hostName" name="hostName" required><br><br>
+
+                <label for="year">Year</label><br>
+                <input type="text" id="year" name="year"><br><br>
+
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br><br>
+
+                <label for="major">Major:</label><br>
+                <input type="text" id="major" name="major" required><br><br>
+
+                <label for="showName">Show Name:</label><br>
+                <input type="text" id="showName" name="showName" required><br><br>
+
+                <label for="showDescription">Show Description:</label><br>
+                <textarea id="showDescription" name="showDescription" rows="6" cols="60" required></textarea><br><br>
+            </div>
+
+            <div class="cohost-container" id="cohostsContainer">
+                </div>
+        </div>
+
+
+        <button type="button" onclick="resetForm()">Reset</button>
+        <button type="button" onclick="submitData()">Submit</button>
+        <button type="button" onclick="loadData()">Load</button>
+    </form>
+
+    <script src="{{ url_for('static', filename='onboarding.js') }}"></script>
+</body>
+</html>
