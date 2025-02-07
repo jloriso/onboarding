@@ -19,6 +19,14 @@ function addCohost() {
     cohostsContainer.appendChild(cohostDiv);
 }
 
+function removeCohost() {
+    if (cohostCount > 0) {
+        const cohostsContainer = document.getElementById("cohostsContainer");
+        cohostsContainer.removeChild(cohostsContainer.lastChild);
+        cohostCount--;
+    }
+}
+
 function createData() {
     const hostName = document.getElementById("hostName").value;
     const year = document.getElementById("year").value;
