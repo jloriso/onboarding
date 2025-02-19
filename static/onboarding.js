@@ -9,7 +9,7 @@ function addCohost() {
         <h3>Cohost ${cohostCount}:</h3>
         <label for="cohost${cohostCount}Name">Name:</label><br>
         <input type="text" id="cohost${cohostCount}Name" name="cohost${cohostCount}Name"><br><br>
-        <label for="cohost${cohostCount}Year">Year (if applicable):</label><br>
+        <label for="cohost${cohostCount}Year">Year:</label><br>
         <input type="text" id="cohost${cohostCount}Year" name="cohost${cohostCount}Year"><br><br>
         <label for="cohost${cohostCount}Email">Email:</label><br>
         <input type="email" id="cohost${cohostCount}Email" name="cohost${cohostCount}Email"><br><br>
@@ -100,22 +100,95 @@ function writeToServer() {
     });
 }
 
-function saveData() {
-    let data = createData();
-    writeDatatoFile(data);
+// function saveData() {
+//     let data = createData();
+//     writeDatatoFile(data);
 
-    document.getElementById("onboardingForm").reset();
-    alert("Data saved!");
-}
+//     document.getElementById("onboardingForm").reset();
+//     alert("Data saved!");
+// }
 
 function submitData() {
+    confirmed = confirmAction('submit');
+
+    if (!confirmed) {
+        alert('Submission cancelled.');
+        return;
+    }
+
+    validated = validateData();
+
+    if (!validated) {
+        alert('Please fill out all required fields.');
+        return;
+    }
+
     writeToServer();
 }
 
+function validateData() {
+    if (document.getElementById("hostName").value === "") {
+        return false;
+    }
+    if (document.getElementById("year").value === "") {
+        return false;
+    }
+    if (document.getElementById("email").value === "") {
+        return false;
+    }
+    if (document.getElementById("major").value === "") {
+        return false;
+    }
+    if (document.getElementById("showName").value === "") {
+        return false;
+    }
+    if (document.getElementById("showDescription").value === "") {
+        return false;
+    }
+    if (cohostCount > 0) {
+        for (let i = 1; i <= cohostCount; i++) {
+            if (document.getElementById(`cohost${i}Name`).value === "") {
+                return false;
+            }
+            if (document.getElementById(`cohost${i}Year`).value === "") {
+                return false;
+            }
+            if (document.getElementById(`cohost${i}Email`).value === "") {
+                return false;
+            }
+            if (document.getElementById(`cohost${i}Major`).value === "") {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 function resetForm() {
+    confirmed = confirmAction('reset');
+
+    if (!confirmed) {
+        return;
+    }
+
     document.getElementById("onboardingForm").reset();
     cohostCount = 0;
     document.getElementById("cohostsContainer").innerHTML = "";
+}
+
+function confirmAction(location){
+    if (location == 'submit'){
+        return confirm("Are you sure you want to submit?");
+    }
+    else if (location == 'reset'){
+        return confirm("Are you sure you want to reset the form?");
+    }
+    else if (location == 'logout'){
+        return confirm("Are you sure you want to logout?");
+    }
+    else {
+        return false;
+    }
 }
 
 function loadData(){
@@ -145,6 +218,13 @@ function loadData(){
 }
 
 function logout(){
+    confirmed = confirmAction('logout');
+
+    if (!confirmed) {
+        alert('Lougout cancelled.');
+        return;
+    }
+
     fetch('/logout', { method: 'POST' }) // Or 'GET', depending on your route
         .then(response => {
             if (response.ok) {
