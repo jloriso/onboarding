@@ -10,7 +10,17 @@ config = configparser.ConfigParser()
 config.read('vault.ini')
 
 try:
-    ACCESS_KEY = app.config.get('ACCESS_KEY', 'default_key')
+    valid_access_keys = [] 
+    # print("Available sections in vault")
+    for section in config.sections():
+        # print(f"- {section}")
+        for key in config[section]:
+            # print(f"  - {key}: {config[section][key]}")
+            valid_access_keys.append(config[section][key])
+
+
+    # print(f"ACCESS_KEY: {valid_access_keys}")
+
 except KeyError:
     print("Error: ACCESS_KEY not found")
     exit(1)
@@ -19,7 +29,7 @@ except KeyError:
 def onboarding():
     if request.method == 'POST':
         entered_key = request.form.get('access_key')
-        if entered_key == ACCESS_KEY:
+        if entered_key in valid_access_keys:
             session['access_granted'] = True
             return redirect(url_for('onboarding')) # Redirect after successful login
         else:
@@ -32,6 +42,10 @@ def onboarding():
 @app.route('/onboarding_data')
 def view_data_page():
     return render_template('onboarding_data.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 @app.route('/save_data', methods=['POST'])
 def save_data():
@@ -61,9 +75,9 @@ def view_data():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
-    session.pop('access_granted', None)
+    session['access_granted'] = False
     return redirect(url_for('onboarding'))
 
 if __name__ == '__main__':

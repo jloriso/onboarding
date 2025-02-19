@@ -143,3 +143,19 @@ function loadData(){
             alert('Error viewing data. Check the console for details.');
         });
 }
+
+function logout(){
+    fetch('/logout', { method: 'POST' }) // Or 'GET', depending on your route
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/"; // Redirect to login
+            } else {
+                console.error("Logout failed:", response.status);
+                alert("Logout failed. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Logout error:", error);
+            alert("An error occurred during logout. Please try again.");
+        });
+}
