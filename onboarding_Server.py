@@ -77,8 +77,8 @@ def view_data():
     
 @app.route('/logout', methods=['POST'])
 def logout():
-    session['access_granted'] = False
-    return redirect(url_for('onboarding'))
+    session.pop('access_granted', None)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True) # debug=True for development
